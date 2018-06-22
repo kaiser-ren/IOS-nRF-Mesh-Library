@@ -51,21 +51,21 @@ public class MeshStateManager: NSObject {
     }
 
     public func generateState() -> Bool {
-        let networkKey = generateRandomKey()
+        let networkKey = generateRandomKeyforNetwork()
         
         guard networkKey != nil else {
             print("Failed to generate network key")
             return false
         }
-        let keyIndex = Data([0x00, 0x00])
+        let keyIndex = Data([0x00, 0x05])
         let flags = Data([0x00])
         let ivIndex = Data([0x00, 0x00, 0x00, 0x00])
         let unicastAddress = Data([0x01, 0x23])
         let globalTTL: UInt8 = 5
         let networkName = "My Network"
-        let appkey1 = generateRandomKey()
-        let appkey2 = generateRandomKey()
-        let appkey3 = generateRandomKey()
+        let appkey1 = generateRandomKeyforApplication()
+        let appkey2 = generateRandomKeyforApplication()
+        let appkey3 = generateRandomKeyforApplication()
 
         guard appkey1 != nil, appkey2 != nil, appkey3 != nil else {
             print("Failed to generate appkeys")
@@ -135,7 +135,13 @@ public class MeshStateManager: NSObject {
     }
     
     // MARK: - Generation helper
-    private func generateRandomKey() -> Data? {
-        return OpenSSLHelper().generateRandom()
+    private func generateRandomKeyforApplication() -> Data? {
+        let newKey = NSData(bytes: [0x2a, 0xa2, 0xa6, 0xde, 0xd5, 0xa0, 0x79, 0x8c, 0xea, 0xb5, 0x78, 0x7c, 0xa3, 0xae, 0x39, 0xfc] as [UInt8], length: 16)
+        return newKey as Data
+    }
+    
+    private func generateRandomKeyforNetwork() -> Data?{
+        let newKey = NSData(bytes: [0x18, 0xee, 0xd9, 0xc2, 0xa5, 0x6a, 0xdd, 0x85, 0x04, 0x9f, 0xfc, 0x3c, 0x59, 0xad, 0x0e, 0x12] as [UInt8], length: 16)
+        return newKey as Data
     }
 }

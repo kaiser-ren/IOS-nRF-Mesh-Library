@@ -120,9 +120,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, UITableView
    }
 
     func generateNewKey() -> Data {
-        let helper = OpenSSLHelper()
-        let newKey = helper.generateRandom()
-        return newKey!
+        //let helper = OpenSSLHelper()
+        //let newKey = helper.generateRandom()
+        
+        let newKey = NSData(bytes: [0x18, 0xee, 0xd9, 0xc2, 0xa5, 0x6a, 0xdd, 0x85, 0x04, 0x9f, 0xfc, 0x3c, 0x59, 0xad, 0x0e, 0x12] as [UInt8], length: 16)
+        
+        return newKey as Data
     }
 
     func didSelectFlagsCell() {
